@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
-
     @GetMapping("/search")
     public ResponseEntity<?> findAllUsers(){
         return null;

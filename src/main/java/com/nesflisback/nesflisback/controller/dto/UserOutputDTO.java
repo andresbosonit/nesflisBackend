@@ -11,10 +11,11 @@ import java.util.Set;
 @RequiredArgsConstructor
 @Builder
 public class UserOutputDTO implements Serializable{
+    private String idUser;
     private String username;
     private String email;
     private String firstName;
     private String lastName;
     private String password;
-    private Set<String> roles;
+    private boolean emailVerified;
 }

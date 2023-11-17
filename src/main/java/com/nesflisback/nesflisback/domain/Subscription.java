@@ -1,9 +1,14 @@
 package com.nesflisback.nesflisback.domain;
 
+import com.nesflisback.nesflisback.controller.dto.SubscriptionInputDTO;
+import com.nesflisback.nesflisback.controller.dto.SubscriptionOutputDTO;
+import com.nesflisback.nesflisback.controller.dto.UserInputDTO;
+import com.nesflisback.nesflisback.controller.dto.UserOutputDTO;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.sql.Date;
+import java.util.ArrayList;
 
 
 @Entity
@@ -23,4 +28,13 @@ public class Subscription {
     @ManyToOne
     @JoinColumn(name = "id_sub_type")
     private Plan plan;
+
+    public Subscription(SubscriptionInputDTO subscriptionInputDTO){
+        this.idSub = subscriptionInputDTO.getIdSub();
+        this.initDate = subscriptionInputDTO.getInitDate();
+        this.terminationDate = subscriptionInputDTO.getTerminationDate();
+    }
+    public SubscriptionOutputDTO subToSubOutputDto(){
+        return new SubscriptionOutputDTO(this.idSub,this.initDate,this.terminationDate,this.user.getIdUser(),this.plan.getIdSubType());
+    }
 }
