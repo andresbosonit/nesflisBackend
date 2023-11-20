@@ -8,11 +8,15 @@ import com.nesflisback.nesflisback.exceptions.EntityNotFoundException;
 import com.nesflisback.nesflisback.repository.PlanRepository;
 import com.nesflisback.nesflisback.repository.SubscriptionRepository;
 import com.nesflisback.nesflisback.service.PlanService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
+@Slf4j
 public class PlanServiceImpl implements PlanService {
     @Autowired
     SubscriptionRepository subscriptionRepository;
@@ -27,9 +31,7 @@ public class PlanServiceImpl implements PlanService {
 
     @Override
     public PlanOutputDTO createPlan(PlanInputDTO planDTO) {
-        Plan plan = planRepository.findById(planDTO.getIdSubType())
-                .orElseThrow(() -> new EntityNotFoundException("Ya exite un plan con ID: " + planDTO.getIdSubType()));
-        return planRepository.save(plan).planToPlanOutputDto();
+        return planRepository.save(new Plan(planDTO)).planToPlanOutputDto();
     }
 
     @Override

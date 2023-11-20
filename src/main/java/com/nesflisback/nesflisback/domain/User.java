@@ -44,6 +44,14 @@ public class User {
         this.profileList = new ArrayList<>();
     }
     public UserOutputDTO userToUserOutputDto(){
-        return new UserOutputDTO(this.idUser,this.username,this.email,this.firstName,this.lastName,this.password,this.emailVerified);
+        List<Integer> integerList = new ArrayList<>();
+        for(Profile profile: this.getProfileList()){
+            integerList.add(profile.getIdProfile());
+        }
+        Integer aux = null;
+        if(this.subscription != null){
+            aux = this.subscription.getIdSub();
+        }
+        return new UserOutputDTO(this.idUser,this.username,this.email,this.firstName,this.lastName,this.password,this.emailVerified,this.unsubscribeDate,aux,integerList);
     }
 }

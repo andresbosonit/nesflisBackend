@@ -8,5 +8,5 @@ import java.util.Optional;
 
 
 public interface PlanRepository extends JpaRepository<Plan, Integer> {
-    //Optional<User> findById(String idUser);
+
 }

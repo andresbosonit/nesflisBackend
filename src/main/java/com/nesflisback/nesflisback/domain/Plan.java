@@ -1,5 +1,6 @@
 package com.nesflisback.nesflisback.domain;
 
+import com.nesflisback.nesflisback.controller.dto.PlanInputDTO;
 import com.nesflisback.nesflisback.controller.dto.PlanOutputDTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -24,6 +25,11 @@ public class Plan {
     @OneToMany(mappedBy = "plan")
     private List<Subscription> subscriptionList;
 
+    public Plan(PlanInputDTO planDTO){
+        this.price = planDTO.getPrice();
+        this.name = planDTO.getName();
+        this.subscriptionList = new ArrayList<>();
+    }
     public PlanOutputDTO planToPlanOutputDto(){
         List<Integer> aux = new ArrayList<>();
         for(Subscription subscription: this.subscriptionList){

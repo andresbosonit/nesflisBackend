@@ -11,7 +11,6 @@ import java.util.List;
 @RequiredArgsConstructor
 @Builder
 public class PlanInputDTO {
-    private int idSubType;
     private Double price;
     private String name;
 }

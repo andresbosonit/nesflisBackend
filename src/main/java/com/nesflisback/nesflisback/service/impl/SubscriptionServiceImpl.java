@@ -10,12 +10,16 @@ import com.nesflisback.nesflisback.repository.PlanRepository;
 import com.nesflisback.nesflisback.repository.SubscriptionRepository;
 import com.nesflisback.nesflisback.repository.UserRepository;
 import com.nesflisback.nesflisback.service.SubscriptionService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
+@Service
+@Slf4j
 public class SubscriptionServiceImpl implements SubscriptionService {
     @Autowired
     SubscriptionRepository subscriptionRepository;
@@ -33,16 +37,19 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 
     @Override
     public SubscriptionOutputDTO createSubscription(SubscriptionInputDTO subscriptionDTO) {
-        Optional<Subscription> subscriptionOptional = subscriptionRepository.findById(subscriptionDTO.getIdSub());
-        if(subscriptionOptional.isPresent()) new EntityNotFoundException("Ya exite una subscripción con id: " + subscriptionDTO.getIdSub());
         Subscription subscription = new Subscription(subscriptionDTO);
         User user = userRepository.findById(subscriptionDTO.getIdUser())
                 .orElseThrow(() -> new EntityNotFoundException("No se encontró el usuario con ID: " + subscriptionDTO.getIdUser()));
+        user.setSubscription(subscription);
         subscription.setUser(user);
         Plan plan = planRepository.findById(subscriptionDTO.getIdPlan())
                 .orElseThrow(() -> new EntityNotFoundException("No se encontró el plan con ID: " + subscriptionDTO.getIdUser()));
+        plan.getSubscriptionList().add(subscription);
         subscription.setPlan(plan);
-        return subscriptionRepository.save(subscription).subToSubOutputDto();
+        SubscriptionOutputDTO subscriptionOutputDTO = subscriptionRepository.save(subscription).subToSubOutputDto();
+        planRepository.save(plan);
+        userRepository.save(user);
+        return subscriptionOutputDTO;
     }
 
     @Override
@@ -61,8 +68,8 @@ public class SubscriptionServiceImpl implements SubscriptionService {
             Plan newPlan = planRepository.findById(subscriptionDTO.getIdPlan())
                     .orElseThrow(() -> new EntityNotFoundException("No se encontró el plan con ID: " + subscriptionDTO.getIdUser()));
             oldPlan.getSubscriptionList().remove(subscription);
-            subscription.setPlan(newPlan);
             newPlan.getSubscriptionList().add(subscription);
+            subscription.setPlan(newPlan);
             planRepository.save(oldPlan);
             planRepository.save(newPlan);
         }

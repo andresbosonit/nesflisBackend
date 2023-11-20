@@ -30,7 +30,6 @@ public class Subscription {
     private Plan plan;
 
     public Subscription(SubscriptionInputDTO subscriptionInputDTO){
-        this.idSub = subscriptionInputDTO.getIdSub();
         this.initDate = subscriptionInputDTO.getInitDate();
         this.terminationDate = subscriptionInputDTO.getTerminationDate();
     }

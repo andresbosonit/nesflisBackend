@@ -25,7 +25,7 @@ public class SubscriptionController {
     }
 
 
-    @GetMapping("/search/{idUser}")
+    @GetMapping("/search/{idSub}")
     public ResponseEntity<?> searchSubscriptionById(@PathVariable int idSub){
         return ResponseEntity.ok(subscriptionService.getSubscriptionById(idSub));
     }
@@ -38,7 +38,7 @@ public class SubscriptionController {
     }
 
 
-    @PutMapping("/update/{userId}")
+    @PutMapping("/update/{idSub}")
     public ResponseEntity<?> updateSubscription(@PathVariable int idSub, @RequestBody SubscriptionInputDTO subDTO){
         subscriptionService.updateSubscription(idSub, subDTO);
         return ResponseEntity.ok("Subscription updated successfully");

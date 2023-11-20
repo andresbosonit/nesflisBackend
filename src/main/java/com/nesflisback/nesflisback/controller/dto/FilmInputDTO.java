@@ -9,9 +9,8 @@ import java.sql.Date;
 @Value
 @RequiredArgsConstructor
 @Builder
-public class SubscriptionInputDTO {
-    private Date initDate;
-    private Date terminationDate;
-    private String idUser;
-    private Integer idPlan;
+public class FilmInputDTO {
+    private String title;
+    private String overview;
+    private Date releaseDate;
 }

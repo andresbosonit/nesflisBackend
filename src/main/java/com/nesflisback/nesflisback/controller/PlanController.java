@@ -25,7 +25,7 @@ public class PlanController {
     }
 
 
-    @GetMapping("/search/{idUser}")
+    @GetMapping("/search/{idPlan}")
     public ResponseEntity<?> searchPlanById(@PathVariable int idPlan){
         return ResponseEntity.ok(planService.getPlanById(idPlan));
     }
@@ -38,7 +38,7 @@ public class PlanController {
     }
 
 
-    @PutMapping("/update/{userId}")
+    @PutMapping("/update/{planId}")
     public ResponseEntity<?> updatePlan(@PathVariable int planId, @RequestBody PlanInputDTO planDTO){
         planService.updatePlan(planId, planDTO);
         return ResponseEntity.ok("Plan updated successfully");
