@@ -10,8 +10,11 @@ import java.util.List;
 @RequiredArgsConstructor
 @Builder
 public class PlanOutputDTO {
-    private int idSubType;
+    private String idSubType;
     private Double price;
     private String name;
+    private String quality;
+    private String resolution;
+    private int deviceNum;
     private List<Integer> subscriptionIdList;
 }

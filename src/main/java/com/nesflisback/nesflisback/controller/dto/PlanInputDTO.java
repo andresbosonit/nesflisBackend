@@ -13,4 +13,7 @@ import java.util.List;
 public class PlanInputDTO {
     private Double price;
     private String name;
+    private String quality;
+    private String resolution;
+    private int deviceNum;
 }

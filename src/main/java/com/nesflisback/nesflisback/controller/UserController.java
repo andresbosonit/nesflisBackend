@@ -13,7 +13,7 @@ import java.net.URISyntaxException;
 
 @RestController
 @RequestMapping("/user")
-//@PreAuthorize("hasRole('admin_client_role')")
+@CrossOrigin(origins = "*")
 public class UserController {
     @Autowired
     private UserService userService;

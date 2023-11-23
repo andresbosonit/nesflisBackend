@@ -16,7 +16,22 @@ services:
       MYSQL_PASSWORD: password
     ports:
       - 3306:3306
-#  keycloak:
+    networks:
+      - my_network
+#
+#  mailhog:
+#    image: mailhog/mailhog
+#    ports:
+#      - "1025:1025"  # Puerto para el servidor SMTP
+#      - "8025:8025"
+#    networks:
+#      - my_network
+
+networks:
+  my_network:
+    driver: bridge
+
+      #  keycloak:
     #    image: quay.io/keycloak/keycloak:legacy
       #  environment:
       #  DB_VENDOR: MYSQL

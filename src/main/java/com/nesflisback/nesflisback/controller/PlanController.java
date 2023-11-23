@@ -14,6 +14,7 @@ import java.net.URISyntaxException;
 
 @RestController
 @RequestMapping("/plan")
+@CrossOrigin(origins = "*")
 public class PlanController {
     @Autowired
     PlanService planService;
