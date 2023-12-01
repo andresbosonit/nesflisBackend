@@ -23,7 +23,7 @@ public class PlanServiceImpl implements PlanService {
     @Autowired
     PlanRepository planRepository;
     @Override
-    public PlanOutputDTO getPlanById(int idPlan) {
+    public PlanOutputDTO getPlanById(String idPlan) {
         Plan plan = planRepository.findById(idPlan)
                 .orElseThrow(() -> new EntityNotFoundException("No se encontró el plan con ID: " + idPlan));
         return plan.planToPlanOutputDto();
@@ -35,7 +35,7 @@ public class PlanServiceImpl implements PlanService {
     }
 
     @Override
-    public void updatePlan(int idPlan, PlanInputDTO planDTO) {
+    public void updatePlan(String idPlan, PlanInputDTO planDTO) {
         Plan plan = planRepository.findById(idPlan)
                 .orElseThrow(() -> new EntityNotFoundException("No se encontró el plan con ID: " + idPlan));
         if(planDTO.getName() != null){

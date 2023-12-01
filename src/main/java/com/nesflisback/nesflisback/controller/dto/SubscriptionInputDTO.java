@@ -13,5 +13,5 @@ public class SubscriptionInputDTO {
     private Date initDate;
     private Date terminationDate;
     private String idUser;
-    private Integer idPlan;
+    private String idPlan;
 }

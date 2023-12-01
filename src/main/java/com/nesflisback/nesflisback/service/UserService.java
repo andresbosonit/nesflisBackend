@@ -10,4 +10,5 @@ public interface UserService {
     UserOutputDTO createUser(UserInputDTO userDTO);
     void updateUser(String userId, UserInputDTO userDTO);
     List<UserOutputDTO> findAllUsers(int pageNumber, int pageSize);
+
 }

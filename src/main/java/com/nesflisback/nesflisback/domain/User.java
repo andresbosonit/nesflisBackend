@@ -4,9 +4,12 @@ import com.nesflisback.nesflisback.controller.dto.UserInputDTO;
 import com.nesflisback.nesflisback.controller.dto.UserOutputDTO;
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -16,18 +19,30 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 public class User {
+
     @Id
     private String idUser;
+
     private String username;
+
     private String email;
+
     private String firstName;
+
     private String lastName;
+
     private String password;
+
     private boolean emailVerified;
+
     private Date unsubscribeDate;
+
+    private String stripeClientId;
+
     @OneToOne
     @JoinColumn(name = "id_sub")
     private Subscription subscription;
+
     @OneToMany(mappedBy = "user")
     private List<Profile> profileList;
 

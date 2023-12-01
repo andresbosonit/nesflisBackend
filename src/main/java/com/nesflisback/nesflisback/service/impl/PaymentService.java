@@ -1,20 +1,20 @@
 package com.nesflisback.nesflisback.service.impl;
 
-import com.nesflisback.nesflisback.controller.dto.PaymentIntentDto;
-import com.nesflisback.nesflisback.controller.dto.UserInputDTO;
-import com.nesflisback.nesflisback.controller.dto.UserOutputDTO;
 import com.nesflisback.nesflisback.service.SubscriptionService;
 import com.stripe.Stripe;
 import com.stripe.exception.StripeException;
 import com.stripe.model.*;
+import com.stripe.param.PaymentLinkCreateParams;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 
 @Service
 public class PaymentService {
@@ -25,32 +25,48 @@ public class PaymentService {
     @Autowired
     SubscriptionService subscriptionService;
 
+    @Autowired
+    ModelMapper modelMapper;
 
-    public Customer createCustomer(UserOutputDTO userOutputDTO) throws StripeException {
-        Map<String, Object> customerParams = new HashMap<>();
-        customerParams.put("id", userOutputDTO.getIdUser());
-        customerParams.put("email", userOutputDTO.getEmail());
-        customerParams.put("name", userOutputDTO.getFirstName() + " " + userOutputDTO.getLastName());
+    public String createPaymentLink(String productId) {
+        try {
+            Stripe.apiKey = secretKey;
 
-        return Customer.create(customerParams);
+            PaymentLinkCreateParams.LineItem item = PaymentLinkCreateParams.LineItem.builder()
+                    .setPrice(productId)
+                    .setQuantity(1L)
+                    .build();
+
+            PaymentLinkCreateParams.AfterCompletion afterCompletion = PaymentLinkCreateParams.AfterCompletion.builder()
+                    .setType(PaymentLinkCreateParams.AfterCompletion.Type.REDIRECT)
+                    .setRedirect(PaymentLinkCreateParams.AfterCompletion.Redirect.builder()
+                            .setUrl("http://localhost:4200/home")
+                            .build())
+                    .build();
+
+            PaymentLinkCreateParams params = PaymentLinkCreateParams.builder()
+                    .addLineItem(item)
+                    .setAfterCompletion(afterCompletion)
+                    .build();
+
+            Jwt jwt = (Jwt) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+
+            String encodedEmail = URLEncoder.encode(jwt.getClaimAsString("email"), StandardCharsets.UTF_8.toString());
+
+            PaymentLink paymentLink = PaymentLink.create(params);
+            paymentLink.setUrl(paymentLink.getUrl()+"?prefilled_email=" + encodedEmail);
+            System.out.println(paymentLink.getUrl());
+            return paymentLink.getUrl();
+        } catch (StripeException e) {
+            e.printStackTrace();
+            return "Error al crear el enlace de pago";
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException(e);
+        }
     }
-    public Subscription subscribe() throws StripeException {
-        Stripe.apiKey = secretKey;
 
-        List<Object> items = new ArrayList<>();
-        Map<String, Object> item1 = new HashMap<>();
-        item1.put(
-                "price",
-                "price_1OFYU8GAd0Yb1G0RRGU5GjSQ"
-        );
-        items.add(item1);
-        Map<String, Object> params = new HashMap<>();
-        params.put("customer", "cus_P3hL6ATfyFbhen");
-        params.put("items", items);
-
-        Subscription subscription =
-                Subscription.create(params);
-
-        return subscription;
+    public Subscription getSubscription(String subId) throws StripeException {
+        return Subscription.retrieve(subId);
     }
 }

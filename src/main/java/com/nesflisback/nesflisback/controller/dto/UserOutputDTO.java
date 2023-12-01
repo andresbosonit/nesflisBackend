@@ -5,18 +5,17 @@ import com.nesflisback.nesflisback.domain.Subscription;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
-import lombok.Builder;
-import lombok.RequiredArgsConstructor;
-import lombok.Value;
+import lombok.*;
 
 import java.io.Serializable;
 import java.sql.Date;
 import java.util.List;
 import java.util.Set;
 
-@Value
-@RequiredArgsConstructor
+@Data
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class UserOutputDTO implements Serializable{
     private String idUser;
     private String username;
@@ -28,4 +27,8 @@ public class UserOutputDTO implements Serializable{
     private Date unsubscribeDate;
     private Integer subscriptionId;
     private List<Integer> profileIdList;
+
+    public UserOutputDTO(String uuid) {
+        this.idUser = uuid;
+    }
 }

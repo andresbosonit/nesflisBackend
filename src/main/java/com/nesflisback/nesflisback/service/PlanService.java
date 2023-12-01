@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface PlanService {
     List<PlanOutputDTO> findAllPlans(int pageNumber, int pageSize);
-    PlanOutputDTO getPlanById(int idPlan);
+    PlanOutputDTO getPlanById(String idPlan);
     PlanOutputDTO createPlan(PlanInputDTO planDTO);
-    void updatePlan(int idPlan, PlanInputDTO planDTO);
+    void updatePlan(String idPlan, PlanInputDTO planDTO);
 }
