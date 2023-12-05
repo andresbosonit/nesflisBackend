@@ -16,7 +16,7 @@ public class PaymentController {
     PaymentService paymentService;
 
     @GetMapping("/createLink/{productId}")
-    public ResponseEntity<MessageResponseDto> payment (@PathVariable String productId) throws StripeException {
+    public ResponseEntity<MessageResponseDto> payment (@PathVariable String productId) {
         return new ResponseEntity<>(new MessageResponseDto(paymentService.createPaymentLink(productId)), HttpStatus.OK);
     }
 }

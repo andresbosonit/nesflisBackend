@@ -4,6 +4,7 @@ import com.nesflisback.nesflisback.service.SubscriptionService;
 import com.stripe.Stripe;
 import com.stripe.exception.StripeException;
 import com.stripe.model.*;
+import com.stripe.model.checkout.Session;
 import com.stripe.param.PaymentLinkCreateParams;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
